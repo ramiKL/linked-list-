@@ -1,0 +1,60 @@
+#include <iostream>
+#include "Header.h"
+
+using namespace std;
+
+int main()
+{
+	List<int> list;
+	list.insert(0, list.zeroth());
+	Node<int>* p = list.first();
+	for (int i = 1; i <= 10; ++i)
+	{
+		list.insert(i, p);
+		p = p->next;
+	}
+	cout << "printing original list" << endl;
+	list.print();
+	
+	
+	for (int i = 0; i <= 10; ++i)
+	{
+		if (i % 2 == 0)
+			list.remove(i);
+	}
+	std::cout << "printing odd number list" << endl;
+	list.print();
+
+	List<int> list2 = list;
+	cout << "printing copy constructed list" << endl;
+	list2.print();
+	List<int> list3;
+	list3 = list;
+	cout << "printing assigned list" << endl;
+	list3.print();
+	list.makeEmpty();
+	cout << "printing emptied list" << endl;
+	list.print();
+
+	cout << "printing the list in reverse order" << endl;
+	List <int> revlist;
+	revlist.insert(0, revlist.zeroth());
+	Node<int>* q = revlist.first();
+
+	for (int i = 1; i <= 10; ++i)
+	{
+		revlist.insert(i, q);
+		q = q->next;
+	}
+
+	revlist.printReverse();  //plus function
+
+
+	
+
+	
+
+	
+
+
+}
