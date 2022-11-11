@@ -1,0 +1,165 @@
+#ifndef LINKLIST
+#define LINKLIST
+
+using namespace std;
+
+template <class T>
+class Node {
+public:
+	Node(const T& e = T(), Node* n = NULL) :
+		element(e), next(n) { }
+	T element;
+	Node* next;
+};
+
+template <class T>
+class List {
+private:
+	Node<T>* dummyHead;
+public:
+	List() {
+		dummyHead = new Node<T>(T(), NULL);
+	}
+
+	Node<T>* zeroth() {
+		return dummyHead;
+	}
+
+	Node<T>* first() {
+		return dummyHead->next;
+	}
+
+	const Node<T>* first() const {          // if we dont have a const first we cant make isEmpty const
+		return dummyHead->next;
+	}
+
+	bool isEmpty() const {
+		return first() == NULL;
+		
+	}
+
+	void insert(const T& data, Node<T>* p) {
+		Node<T>* newNode = new Node<T>(data, p->next);
+		p->next = newNode;
+	}
+
+	Node<T>* find(const T& data) {
+		Node<T>* p = first();
+		while (p) {
+			if (p->element == data)
+				return p;
+			p = p->next;
+		}
+		return NULL;
+	}
+
+	Node<T>* findPrevious(const T& data) {
+		Node<T>* p = zeroth();
+		while (p->next) {
+			if (p->next->element == data)
+				return p;
+			p = p->next;
+		}
+		return NULL;
+
+
+	}
+
+	void remove(const T& data) {
+		Node<T>* p = findPrevious(data);
+		if (p) {
+			Node<T>* tmp = p->next;
+			p->next = tmp->next;
+			delete tmp;
+		}
+
+	}
+
+	void print() const {
+		const Node<T>* p = first();
+		while (p) {
+			cout << p->element << endl;
+			p = p->next;
+		}
+	}
+
+	void makeEmpty()
+	{
+		while (!isEmpty()) {
+			remove(first()->element);
+			
+		}
+
+		
+	}
+	
+
+	~List() {
+		makeEmpty();
+		delete dummyHead;
+	}
+
+	List& operator=(const List& rhs){
+		{
+			if (this != &rhs) {
+				makeEmpty();
+				const Node<T>* r = rhs.first();
+				Node<T>* p = zeroth();
+				while (r) {
+					insert(r->element, p);
+					r = r->next;
+					p = p->next;
+				}
+			}
+			return *this;
+		}
+	}
+
+	List(const List& rhs) {
+		dummyHead = new Node<T>(T(), NULL);
+		*this = rhs; // by using the assign operator 
+	}
+
+	int countItems()   //plus function
+	{
+		int count = 1;
+		for (Node<T>* temp = dummyHead; temp->next != NULL; temp = temp->next)
+			++count;
+		return count;
+	}
+
+	
+	
+	void printReverse()    //plus function
+	{
+			
+	
+			Node<T>* temp = dummyHead;
+			while (temp->next != NULL)
+				temp = temp->next;
+
+			//Print last node before we enter loop
+			cout << temp->element << endl;
+
+			for (double count = countItems() / 2; count != 0; count--)
+			{
+				//Set temp2 before temp
+				Node<T>*  temp2 = dummyHead;
+				while (temp2->next != temp)
+					temp2 = temp2->next;
+				cout << temp2->element << endl;
+
+				//Set temp before temp2
+				temp = dummyHead;
+				while (temp->next != temp2)
+					temp = temp->next;
+				cout << temp->element << endl;
+			}
+	}
+
+
+	
+	
+
+};
+#endif
